@@ -1,3 +1,5 @@
+/** @type {import('tailwindcss').Config} */
+
 import type { Config } from "tailwindcss";
 const { nextui } = require("@nextui-org/react");
 const defaultTheme = require("tailwindcss/defaultTheme");
@@ -11,13 +13,21 @@ const {
 
 const config: Config = {
   content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}"
+
   ],
   theme: {
     extend: {
+      colors: {
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        btn: {
+          background: "hsl(var(--btn-background))",
+          "background-hover": "hsl(var(--btn-background-hover))",
+        },
+      },
       animation: {
         spotlight: "spotlight 2s ease .75s 1 forwards",
       },

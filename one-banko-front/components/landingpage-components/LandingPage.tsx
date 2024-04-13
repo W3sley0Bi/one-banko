@@ -1,9 +1,9 @@
-import { SpotlightPreview } from "./landingpage-components/ui/Spotlight/SpotlightPreview";
-import GetStarted from "./landingpage-components/ui/GetStartedButton/GetStarted";
-import SectionTwo from "./landingpage-components/SectionTwo"
+import { SpotlightPreview } from "./ui/Spotlight/SpotlightPreview";
+import GetStarted from "./ui/GetStartedButton/GetStarted";
+import SectionTwo from "./SectionTwo"
 import { Spacer } from "@nextui-org/react";
 
-export default function Home() {
+export default function LandingPage() {
   return (
   <>
   <section id="section-one" style={{height:"100vh"}}>

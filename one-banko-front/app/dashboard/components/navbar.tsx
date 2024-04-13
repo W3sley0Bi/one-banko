@@ -96,6 +96,7 @@ export default function CustomNav() {
           </NavbarMenuItem>
         ))}
       </NavbarMenu>
+      
     </Navbar>
   );
 }
