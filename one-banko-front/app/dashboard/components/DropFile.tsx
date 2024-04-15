@@ -4,7 +4,7 @@ import { useDropzone } from "react-dropzone";
 import { IconUpload } from "@tabler/icons-react";
 import { Button } from "@nextui-org/react";
 import axios from "axios";
-import { log } from "console";
+import {getToken} from "../../auth/getToken"
 
 export default function DropFile(props: any) {
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
@@ -21,18 +21,23 @@ export default function DropFile(props: any) {
     const form = new FormData();
     console.log(acceptedFiles[0]);
     form.append("file", acceptedFiles[0]);
+
+    let token = await getToken()
+
     let res = await axios.post(
       `${process.env.NEXT_PUBLIC_PYTHON_SERVER}/extractor`,
       form,
       {
         headers: {
           "Content-Type": "multipart/form-data",
+          "Authorization" : token,
         },
       }
     );
-
+      
     console.log(res);
     console.log(res.data);
+    console.log(JSON.parse(res.data.content))
   };
 
   return (

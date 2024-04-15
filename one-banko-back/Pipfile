@@ -5,9 +5,13 @@ name = "pypi"
 
 [packages]
 fastapi = "*"
-uvicorn = {extras = ["standard"], version = "*"}
-tabula-py = {extras = ["jpype"], version = "*"}
+uvicorn = {extras = ["standard"] }
+tabula-py = {extras = ["jpype"] }
 python-multipart = "*"
+pdftotext = "*"
+openai = "*"
+python-dotenv = "*"
+supabase = "*"
 
 [dev-packages]
 

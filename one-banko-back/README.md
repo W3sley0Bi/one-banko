@@ -13,7 +13,7 @@
 https://pipenv.pypa.io/en/latest/
 
 ### how to install a package 
-python3 -m pipenv install <package>
+python3 -m pipenv install <package> OR pipenv install <package>
 
 
 # run with the command 
