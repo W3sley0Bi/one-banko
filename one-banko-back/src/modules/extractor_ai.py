@@ -13,7 +13,6 @@ client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 
 def convert_pdf_ai(file):
-    
     pdf = pdftotext.PDF(BytesIO(file), physical=True)
     extracted_text = ""
 
@@ -40,5 +39,3 @@ def fun_gpt(file):
   #   ]
   # )
   # return completion.choices[0].message
-
-  

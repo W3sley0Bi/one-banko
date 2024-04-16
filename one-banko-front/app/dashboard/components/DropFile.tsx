@@ -1,12 +1,12 @@
-"use client";
-import React from "react";
-import { useDropzone } from "react-dropzone";
-import { IconUpload } from "@tabler/icons-react";
-import { Button } from "@nextui-org/react";
-import axios from "axios";
-import {getToken} from "../../auth/getToken"
+'use client';
+import React, { forwardRef, useImperativeHandle } from 'react';
+import { useDropzone } from 'react-dropzone';
+import { IconUpload } from '@tabler/icons-react';
+import { Button } from '@nextui-org/react';
+import axios from 'axios';
+import { getToken } from '../../auth/getToken';
 
-export default function DropFile(props: any) {
+ const DropFile = forwardRef((props, ref) => {
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
 
   const files = acceptedFiles.map((file) => (
@@ -17,41 +17,47 @@ export default function DropFile(props: any) {
     </>
   ));
 
-  const submit = async () => {
+  const submitFile = async () => {
     const form = new FormData();
     console.log(acceptedFiles[0]);
-    form.append("file", acceptedFiles[0]);
+    form.append('file', acceptedFiles[0]);
 
-    let token = await getToken()
+    let token = await getToken();
 
     let res = await axios.post(
       `${process.env.NEXT_PUBLIC_PYTHON_SERVER}/extractor`,
       form,
       {
         headers: {
-          "Content-Type": "multipart/form-data",
-          "Authorization" : token,
-        },
+          'Content-Type': 'multipart/form-data',
+          Authorization: token
+        }
       }
     );
-      
+
     console.log(res);
     console.log(res.data);
-    console.log(JSON.parse(res.data.content))
+    console.log(JSON.parse(res.data.content));
+    return res
   };
+
+  useImperativeHandle(ref, () => ({
+    submitFile,
+  }));
+
 
   return (
     <section className="container">
-      <div {...getRootProps({ className: "dropzone" })}>
+      <div {...getRootProps({ className: 'dropzone' })}>
         <input {...getInputProps()} />
         <div
           style={{
-            border: "3px solid white",
-            borderStyle: "dashed",
-            borderRadius: "10px",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
+            border: '3px solid white',
+            borderStyle: 'dashed',
+            borderRadius: '10px',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center'
           }}
         >
           <IconUpload stroke={2} />
@@ -62,7 +68,8 @@ export default function DropFile(props: any) {
         <h4>Files</h4>
         <ul>{files}</ul>
       </aside>
-      <Button onClick={submit}>Submit</Button>
     </section>
   );
-}
+})
+
+export default DropFile;
