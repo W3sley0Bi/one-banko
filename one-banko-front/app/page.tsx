@@ -1,45 +1,42 @@
-import AuthButton from "../components/AuthButton";
-import { createClient } from "@/utils/supabase/server";
+import Pricing from '@/components/ui/Pricing/Pricing';
+import { createClient } from '@/utils/supabase/server';
 import LandingPage from "@/components/landingpage-components/LandingPage";
 
-export default async function Index() {
-  const canInitSupabaseClient = () => {
-    // This function is just for the interactive tutorial.
-    // Feel free to remove it once you have Supabase connected.
-    try {
-      createClient();
-      return true;
-    } catch (e) {
-      return false;
-    }
-  };
 
-  const isSupabaseConnected = canInitSupabaseClient();
+export default async function PricingPage() {
+  const supabase = createClient();
+
+  const {
+    data: { user }
+  } = await supabase.auth.getUser();
+
+  const { data: subscription, error } = await supabase
+    .from('subscriptions')
+    .select('*, prices(*, products(*))')
+    .in('status', ['trialing', 'active'])
+    .maybeSingle();
+
+  if (error) {
+    console.log(error);
+  }
+
+  const { data: products } = await supabase
+    .from('products')
+    .select('*, prices(*)')
+    .eq('active', true)
+    .eq('prices.active', true)
+    .order('metadata->index')
+    .order('unit_amount', { referencedTable: 'prices' });
 
   return (
-    <div>
-      <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
-        <div className="w-full max-w-4xl flex justify-between items-center p-3 text-sm">
-          <p>Logo</p>
-          {isSupabaseConnected && <AuthButton />}
-        </div>
-      </nav>
+    <>
+    <LandingPage></LandingPage>
+    <Pricing
+      user={user}
+      products={products ?? []}
+      subscription={subscription}
+    />
 
-     <LandingPage></LandingPage>
-
-      <footer className="w-full border-t border-t-foreground/10 p-8 flex justify-center text-center text-xs">
-        <p>
-          Powered by{" "}
-          <a
-            href="https://supabase.com/?utm_source=create-next-app&utm_medium=template&utm_term=nextjs"
-            target="_blank"
-            className="font-bold hover:underline"
-            rel="noreferrer"
-          >
-            Supabase
-          </a>
-        </p>
-      </footer>
-    </div>
+</>
   );
 }
